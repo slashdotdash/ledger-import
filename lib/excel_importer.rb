@@ -18,10 +18,9 @@ class ExcelImporter
     parser = TransactionParser.new(@workbook)
     
     each_monthly_sheet do |sheet|
-      puts sheet
-      parser.extract_transactions.each {|transaction| @transactions << transaction }
+      @transactions += parser.extract_transactions
     end
-    
+
     @transactions.sort_by {|transaction| transaction.date }
   end
   
@@ -32,7 +31,7 @@ private
   end
 
   def each_monthly_sheet(&blk)
-    @workbook.sheets[2..2].each do |sheet|
+    @workbook.sheets[2..13].each do |sheet|
       @workbook.default_sheet = sheet
       yield sheet
     end

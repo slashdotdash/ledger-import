@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'optparse'
+require 'pp'
+require 'json'
+require File.expand_path('../../ledger_import',  __FILE__)
+
+help = <<HELP
+ledger-import is a tool for creating a Ledger .dat file from an accountancy spreadsheet.
+
+Basic Command Line Usage:  
+  ledger-import path/to/spreadsheet.xls
+
+  using the following options:
+
+HELP
+
+options = {}
+opts = OptionParser.new do |opts|
+  opts.banner = help
+
+  opts.on("--format [FORMAT]", "Format of the source file to import from") do |file_format|
+    options[:format] = file_format
+  end
+end
+
+# Read command line options into `options` hash
+opts.parse!
+
+# Get source and destintation from command line
+case ARGV.size
+  when 1
+    options[:source] = ARGV[0]
+  when 2
+    options[:source]      = ARGV[0]
+    options[:destination] = ARGV[1]
+  else
+    puts "Invalid options. Run `ledger-import --help` for assistance."
+    exit(1)
+end
+
+transactions = ExcelImporter.new(options[:source]).read
+pp transactions
