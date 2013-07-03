@@ -26,7 +26,7 @@ describe ExcelImporter do
         subject { @transactions[0].postings[1] }
         specify { subject.account.name.should == 'Income:Sales'  }
         specify { subject.amount.should be_nil }
-      end      
+      end
     end
     
     context "receipts" do
@@ -167,8 +167,91 @@ describe ExcelImporter do
           specify { subject.account.name.should == 'Assets:Current Account' }
           specify { subject.amount.should be_nil }
         end
-      end          
+      end
+
+      context "dividend" do
+        before(:each) { @transaction = @transactions[8] }
+        subject { @transaction }
+        specify { subject.description.should == 'Dividend' }
+        specify { subject.date.should == Date.new(2013, 1, 17) }
+        specify { subject.postings.length.should == 2 }
       
+        context "to" do
+          subject { @transaction.postings[0] }
+          specify { subject.account.name.should == 'Expenses:Dividend' }
+          specify { subject.amount.should == 100 }
+        end
+
+        context "from" do
+          subject { @transaction.postings[1] }
+          specify { subject.account.name.should == 'Assets:Current Account' }
+          specify { subject.amount.should be_nil }
+        end
+      end
+
+      context "dividend" do
+        before(:each) { @transaction = @transactions[8] }
+        subject { @transaction }
+        specify { subject.description.should == 'Dividend' }
+        specify { subject.date.should == Date.new(2013, 1, 17) }
+        specify { subject.postings.length.should == 2 }
+      
+        context "to" do
+          subject { @transaction.postings[0] }
+          specify { subject.account.name.should == 'Expenses:Dividend' }
+          specify { subject.amount.should == 100 }
+        end
+
+        context "from" do
+          subject { @transaction.postings[1] }
+          specify { subject.account.name.should == 'Assets:Current Account' }
+          specify { subject.amount.should be_nil }
+        end
+      end
+
+      context "cost of goods sold" do
+        before(:each) { @transaction = @transactions[9] }
+        subject { @transaction }
+        specify { subject.description.should == 'Cost of Goods Sold' }
+        specify { subject.date.should == Date.new(2013, 1, 18) }
+        specify { subject.postings.length.should == 2 }
+      
+        context "to" do
+          subject { @transaction.postings[0] }
+          specify { subject.account.name.should == 'Expenses:Goods Sold' }
+          specify { subject.amount.should == 10 }
+        end
+
+        context "from" do
+          subject { @transaction.postings[1] }
+          specify { subject.account.name.should == 'Assets:Current Account' }
+          specify { subject.amount.should be_nil }
+        end
+      end
+    end
+  
+    context "expenses reclaimed" do
+      before(:each) do
+        @transaction = @transactions.find {|transaction| transaction.description == 'Expenses Reclaimed' }
+      end
+      subject { @transaction }
+      specify { should_not be_nil }
+      
+      specify { subject.description.should == 'Expenses Reclaimed' }
+      specify { subject.date.should == Date.new(2013, 1, 31) }
+      specify { subject.postings.length.should == 2 }
+      
+      context "to" do
+        subject { @transaction.postings[0] }
+        specify { subject.account.name.should == 'Expenses:Cash'  }
+        specify { subject.amount.should == 90 }
+      end
+
+      context "from" do
+        subject { @transaction.postings[1] }
+        specify { subject.account.name.should == 'Assets:Current Account'  }
+        specify { subject.amount.should be_nil }
+      end
     end
   end
 end

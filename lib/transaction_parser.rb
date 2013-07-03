@@ -19,8 +19,12 @@ class TransactionParser
   
 private
   
-  def value_present?(column, row)
-    !@workbook.celltype(column, row).to_s.empty? && @workbook.cell(column, row).to_f > 0
+  def value_present?(column_or_array, row)
+    if column_or_array.is_a?(Array)
+      column_or_array.all? {|column| value_present?(column, row) }
+    else
+      !@workbook.celltype(column_or_array, row).to_s.empty? && @workbook.cell(column_or_array, row).to_f != 0
+    end
   end
   
   def each_specification(&blk)
@@ -36,7 +40,7 @@ private
   def create_transaction(spec, row)
     date = @workbook.cell(spec.date_cell, row)
     description = @workbook.cell(spec.description_cell, row)
-    amount = @workbook.cell(spec.amount_cell, row).to_f
+    amount = @workbook.cell((spec.amount_cell.is_a?(Array) ? spec.amount_cell[0] : spec.amount_cell), row).to_f
     
     Transaction.new(date, description).tap do |transaction|
       transaction.postings << Posting.new(create_account(spec.to_account, row), amount)

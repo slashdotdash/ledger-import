@@ -35,7 +35,12 @@ module Specifications
       entertainment = Specification.new(defaults.merge({ :to => 'Expenses:Entertainment', :amount => 'AB' }))
       sundries = Specification.new(defaults.merge({ :to => 'Expenses:Sundries', :amount => 'AC' }))
       
-      [ motor, 
+      # reclaimed expenses
+      reimbursed_cash = Specification.new(defaults.merge({ :to => 'Expenses:Cash', :from => 'Assets:Current Account', :amount => ['D', 'E'] }))
+      reimbursed_credit_card = Specification.new(defaults.merge({ :to => 'Liabilities:Credit Card', :from => 'Assets:Current Account', :amount => ['D', 'F'] }))
+      
+      [ 
+        motor, 
         travel, 
         insurance, 
         pension, 
@@ -56,7 +61,9 @@ module Specifications
         corporation_tax,
         directors_loan,
         entertainment,
-        sundries
+        sundries,
+        reimbursed_cash,
+        reimbursed_credit_card
       ]
     end
   end
