@@ -41,4 +41,6 @@ case ARGV.size
 end
 
 transactions = ExcelImporter.new(options[:source]).read
-pp transactions
+
+writer = LedgerWriter.new(transactions)
+puts writer.to_s
