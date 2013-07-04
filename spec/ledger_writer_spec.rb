@@ -12,10 +12,10 @@ describe LedgerWriter do
       @transactions = [ @transaction ]
     end
     
-    subject { LedgerWriter.new(@transactions).to_s }
+    subject { LedgerWriter.new(@transactions).to_s + "\n" }
     specify { should == <<EXPECTED
 2013/01/01 Payment for INVOICE1
-  Assets:Current Account    £1,200.00
+  Assets:Current Account\t\t£1,200.00
   Assets:Accounts Receivable
 EXPECTED
     }

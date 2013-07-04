@@ -3,6 +3,7 @@
 class LedgerWriter
   def initialize(transactions)
     @transactions = transactions
+    @number_formatter = NumberFormatter.new
   end
 
   # 
@@ -17,7 +18,7 @@ class LedgerWriter
       builder << "#{formatted_date(transaction.date)} #{transaction.description}"
       
       transaction.postings.each do |posting|
-        builder << "  #{posting.account.name}   #{formatted_amount(posting.amount)}".rstrip
+        builder << "  #{posting.account.name}#{formatted_amount(posting.amount)}"
       end
     end
     
@@ -33,6 +34,6 @@ private
   def formatted_amount(amount)
     return '' if amount.nil?
     
-    "£#{amount}"
+    "\t\t" + @number_formatter.number_to_currency(amount, :unit => '£')
   end
 end
