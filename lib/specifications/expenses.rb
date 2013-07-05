@@ -1,8 +1,16 @@
 module Specifications
   class Expenses
-    def self.specifications
+    def self.for(format)
+      Expenses.new(format).specifications
+    end
+    
+    def initialize(format)
+      @format = format
+    end
+    
+    def specifications
       defaults = { 
-        :rows => (80..107),
+        :rows => rows,
         :date => 'A',
         :description => 'B',
         :from => { 
@@ -65,6 +73,20 @@ module Specifications
         reimbursed_cash,
         reimbursed_credit_card
       ]
+    end
+  
+  private
+    def rows
+      case @format 
+        when '2013-14'
+          (80..196)
+        when '2012-13'
+          (80..196)
+        when '2011-12'
+          (69..99)
+        else 
+          throw 'Format not recognised'
+      end
     end
   end
 end

@@ -1,9 +1,8 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)) + '/../')
+
 require 'optparse'
-require 'pp'
-require 'json'
 require File.expand_path('../../ledger_import',  __FILE__)
 
 help = <<HELP
@@ -31,16 +30,16 @@ opts.parse!
 # Get source and destintation from command line
 case ARGV.size
   when 1
-    options[:source] = ARGV[0]
+    options[:filename] = ARGV[0]
   when 2
-    options[:source]      = ARGV[0]
+    options[:filename]      = ARGV[0]
     options[:destination] = ARGV[1]
   else
     puts "Invalid options. Run `ledger-import --help` for assistance."
     exit(1)
 end
 
-transactions = ExcelImporter.new(options[:source]).read
-
+transactions = ExcelImporter.parse(options)
 writer = LedgerWriter.new(transactions)
+
 puts writer.to_s

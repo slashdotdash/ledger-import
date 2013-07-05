@@ -1,8 +1,16 @@
 module Specifications
   class Invoices
-    def self.specifications
+    def self.for(format)
+        Invoices.new(format).specifications
+    end
+    
+    def initialize(format)
+      @format = format
+    end
+    
+    def specifications
       defaults = { 
-        :rows => (17..52),
+        :rows => rows,
         :date => 'A',
         :description => 'B'
       }
@@ -13,6 +21,20 @@ module Specifications
         :amount => 'F' }))
 
        [ invoices ]   
+    end
+    
+  private
+    def rows
+      case @format
+        when '2013-14'
+          (17..52)
+        when '2012-13'
+          (17..52)
+        when '2011-12'
+          (17..41)
+        else 
+          throw 'Format not recognised'
+      end
     end
   end
 end

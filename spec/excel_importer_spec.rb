@@ -1,10 +1,12 @@
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)) + '/../')
+
 require './ledger_import'
 
 describe ExcelImporter do
   context "when parsing transactions" do
     before(:all) do
       file = File.expand_path('../data/SJD-Spreadsheet-2013-2014.xls', __FILE__)
-      @transactions = ExcelImporter.new(file).read
+      @transactions = ExcelImporter.parse(:filename => file, :format => '2013-14')
     end
     
     subject { @transactions }

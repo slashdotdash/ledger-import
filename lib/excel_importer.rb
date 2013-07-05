@@ -2,12 +2,15 @@ require 'rubygems'
 require 'roo'
 
 class ExcelImporter
-  def self.parse(filename)
-    ExcelImporter.new(filename).read
+  def self.parse(options)
+    filename = options[:filename]
+    format = options[:format] || '2013-14'
+    
+    ExcelImporter.new(filename, format).read
   end
   
-  def initialize(filename)
-    @filename = filename
+  def initialize(filename, format)
+    @filename, @format = filename, format
     @transactions = []
   end
   
@@ -15,7 +18,7 @@ class ExcelImporter
   def read
     open_file
     
-    parser = TransactionParser.new(@workbook)
+    parser = TransactionParser.new(@workbook, @format)
     
     each_monthly_sheet do |sheet|
       @transactions += parser.extract_transactions

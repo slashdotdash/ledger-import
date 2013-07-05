@@ -19,15 +19,15 @@ module Specifications
       @configuration[:from]
     end
     
-    def date_cell
+    def date_column
       @configuration[:date]
     end
     
-    def description_cell
+    def description_column
       @configuration[:description]
     end
     
-    def amount_cell
+    def amount_column
       @configuration[:amount]
     end
   end
