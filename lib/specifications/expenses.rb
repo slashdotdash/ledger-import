@@ -78,11 +78,9 @@ module Specifications
   private
     def rows
       case @format 
-        when '2013-14'
+        when '2013-14', '2012-13'
           (80..196)
-        when '2012-13'
-          (80..196)
-        when '2011-12'
+        when '2011-12', '2010-11', '2009-10', '2008-09'
           (69..99)
         else 
           throw 'Format not recognised'
