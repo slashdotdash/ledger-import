@@ -15,7 +15,7 @@ module Specifications
         :description => 'B',
         :from => { 
           'D' => 'Assets:Current Account',
-          'E' => 'Expenses:Cash',
+          'E' => 'Liabilities:Reimbursements:Expenses',
           'F' => 'Liabilities:Credit Card'
         }
       }
@@ -23,7 +23,7 @@ module Specifications
       expenses = expenses_for_format(defaults)
       
       # reclaimed expenses
-      expenses << Specification.new(defaults.merge({ :to => 'Expenses:Cash', :from => 'Assets:Current Account', :amount => ['D', 'E'] }))
+      expenses << Specification.new(defaults.merge({ :to => 'Liabilities:Reimbursements:Expenses', :from => 'Assets:Current Account', :amount => ['D', 'E'] }))
       expenses << Specification.new(defaults.merge({ :to => 'Liabilities:Credit Card', :from => 'Assets:Current Account', :amount => ['D', 'F'] }))
       
       expenses
@@ -64,7 +64,7 @@ module Specifications
             Specification.new(defaults.merge({ :to => 'Assets:Deposit Account', :amount => 'X' })),
             Specification.new(defaults.merge({ :to => 'Expenses:Tax:VAT', :amount => 'Y' })),
             Specification.new(defaults.merge({ :to => 'Expenses:Tax:Corporation', :amount => 'Z' })),
-            Specification.new(defaults.merge({ :to => 'Expenses:Directors Loan', :amount => 'AA' })),
+            Specification.new(defaults.merge({ :to => 'Assets:Directors Loan', :amount => 'AA' })),
             Specification.new(defaults.merge({ :to => 'Expenses:Entertainment', :amount => 'AB' })),
             Specification.new(defaults.merge({ :to => 'Expenses:Sundries', :amount => 'AC' })),
           ]
@@ -91,7 +91,7 @@ module Specifications
             Specification.new(defaults.merge({ :to => 'Expenses:Bank Charges', :amount => 'Z' })),
             Specification.new(defaults.merge({ :to => 'Expenses:Home', :amount => 'AA' })),
             Specification.new(defaults.merge({ :to => 'Expenses:Tax:Corporation', :amount => 'AB' })),
-            Specification.new(defaults.merge({ :to => 'Expenses:Directors Loan', :amount => 'AC' })),
+            Specification.new(defaults.merge({ :to => 'Assets:Directors Loan', :amount => 'AC' })),
             Specification.new(defaults.merge({ :to => 'Expenses:Entertainment', :amount => 'AD' })),
             Specification.new(defaults.merge({ :to => 'Expenses:Sundries', :amount => 'AE' })),
           ]
